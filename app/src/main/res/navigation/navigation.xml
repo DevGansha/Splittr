@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/mainScreen">
+
+    <fragment
+        android:id="@+id/mainScreen"
+        android:name="com.example.androidproject.fragments.MainScreen"
+        android:label="MainScreen"
+        tools:layout="@layout/fragment_main_screen">
+        <action
+            android:id="@+id/action_mainScreen_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_mainScreen_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.example.androidproject.fragments.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_mainScreen"
+            app:destination="@id/mainScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.androidproject.fragments.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_mainScreen"
+            app:destination="@id/mainScreen" />
+    </fragment>
+</navigation>

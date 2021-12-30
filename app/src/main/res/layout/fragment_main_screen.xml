@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/labelTxtView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/splittr"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="60dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="22sp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signinBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/labelTxtView"
+        app:layout_constraintStart_toStartOf="@id/labelTxtView"
+        app:layout_constraintEnd_toStartOf="@+id/signupBtn"
+        android:background="@drawable/button_bg"
+        android:text="@string/signin"
+        android:textColor="@color/white"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signupBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="08dp"
+        app:layout_constraintTop_toTopOf="@id/signinBtn"
+        app:layout_constraintStart_toEndOf="@+id/signinBtn"
+        app:layout_constraintEnd_toEndOf="@id/labelTxtView"
+        android:background="@drawable/button_bg"
+        android:text="@string/signin"
+        android:textColor="@color/white"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
