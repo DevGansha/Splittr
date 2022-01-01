@@ -39,7 +39,7 @@
         app:layout_constraintStart_toEndOf="@+id/signinBtn"
         app:layout_constraintEnd_toEndOf="@id/labelTxtView"
         android:background="@drawable/button_bg"
-        android:text="@string/signin"
+        android:text="@string/signup"
         android:textColor="@color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

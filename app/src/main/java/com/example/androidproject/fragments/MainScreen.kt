@@ -12,12 +12,7 @@ import kotlinx.android.synthetic.main.fragment_main_screen.view.*
 
 class MainScreen : Fragment() {
 
-
     var root : View? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +23,9 @@ class MainScreen : Fragment() {
 
         root.signinBtn.setOnClickListener {
             Navigation.findNavController(root).navigate(R.id.signInFragment)
+        }
+        root.signupBtn.setOnClickListener {
+            Navigation.findNavController(root).navigate(R.id.signUpFragment)
         }
         return root
     }
