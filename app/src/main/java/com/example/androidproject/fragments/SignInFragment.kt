@@ -1,5 +1,6 @@
 package com.example.androidproject.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.androidproject.*
+import com.example.androidproject.activities.HomeActivity
 import com.example.androidproject.models.login.Login
 import com.example.androidproject.models.login.loginData
 import com.example.androidproject.network.APIService
@@ -59,7 +61,10 @@ class SignInFragment : Fragment() {
         call?.enqueue(object: Callback<loginData>{
             override fun onResponse(call: Call<loginData>?, response: retrofit2.Response<loginData>?) {
                 root!!.progressBar.visibility = View.GONE
-                if(response!!.isSuccessful) Toast.makeText(context,  response.body().data.toString(), Toast.LENGTH_LONG).show()
+                if(response!!.isSuccessful) {
+                    startActivity(Intent(context, HomeActivity::class.java) )
+                }
+                    //Toast.makeText(context,  response.body().data.toString(), Toast.LENGTH_LONG).show()
             }
             override fun onFailure(call: Call<loginData>?, t: Throwable?) {
                 root!!.progressBar.visibility = View.GONE

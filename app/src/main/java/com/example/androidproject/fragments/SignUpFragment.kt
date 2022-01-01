@@ -35,12 +35,21 @@ class SignUpFragment : Fragment() {
         root =  inflater.inflate(R.layout.fragment_sign_up, container, false)
 
         root!!.btn_signup.setOnClickListener {
-            if(root!!.pwdTxt.text.toString().trim().equals(root!!.repeatPwdTxt.text.toString().trim(), true)){
-                signup(root!!.usernameTxt.text.toString().trim(),
-                root!!.emailTxt.text.toString().trim(),
-                pwdTxt.text.toString().trim())
+            if(root!!.usernameTxt.text.toString().isNotBlank() && root!!.emailTxt.text.toString().isNotBlank() &&
+            pwdTxt.text.toString().isNotBlank() && repeatPwdTxt.text.toString().isNotBlank()) {
+                if (root!!.pwdTxt.text.toString().trim()
+                        .equals(root!!.repeatPwdTxt.text.toString().trim(), true)
+                ) {
+                    signup(
+                        root!!.usernameTxt.text.toString().trim(),
+                        root!!.emailTxt.text.toString().trim(),
+                        pwdTxt.text.toString().trim()
+                    )
+                } else {
+                    Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG).show()
+                }
             }else{
-                Toast.makeText(context, "Passwords do not match", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Please provide all details", Toast.LENGTH_LONG).show()
             }
         }
         return root
