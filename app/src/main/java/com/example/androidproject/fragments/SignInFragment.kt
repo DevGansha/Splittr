@@ -18,6 +18,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Call
 import retrofit2.Callback
+import android.content.Context
+
+import android.content.SharedPreferences
+
+
+
 
 
 class SignInFragment : Fragment() {
@@ -62,6 +68,11 @@ class SignInFragment : Fragment() {
             override fun onResponse(call: Call<loginData>?, response: retrofit2.Response<loginData>?) {
                 root!!.progressBar.visibility = View.GONE
                 if(response!!.isSuccessful) {
+                    val sharedPref = activity?.getSharedPreferences("splitter", Context.MODE_PRIVATE) ?: return
+                    with (sharedPref.edit()) {
+                        putInt("user_id", response.body().data!!.get(0).id!!)
+                        apply()
+                    }
                     startActivity(Intent(context, HomeActivity::class.java) )
                 }
                     //Toast.makeText(context,  response.body().data.toString(), Toast.LENGTH_LONG).show()

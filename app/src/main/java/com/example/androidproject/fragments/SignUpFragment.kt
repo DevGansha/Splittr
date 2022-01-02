@@ -8,13 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.androidproject.EndPoints
 import com.example.androidproject.R
-import com.example.androidproject.models.login.Login
-import com.example.androidproject.models.login.data
-import com.example.androidproject.models.login.loginData
 import com.example.androidproject.models.signup.SignupRequest
-import com.example.androidproject.models.signup.SignupResponse
+import com.example.androidproject.models.signup.ResponseData
 import com.example.androidproject.network.APIService
-import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.android.synthetic.main.fragment_sign_in.pwdTxt
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.fragment_sign_up.view.*
@@ -66,15 +62,15 @@ class SignUpFragment : Fragment() {
 
         val signup = SignupRequest(username, email, password)
         //defining the call
-        val call: Call<SignupResponse>? = service.signup(signup)
+        val call: Call<ResponseData>? = service.signup(signup)
 
         root!!.progressBar.visibility = View.VISIBLE
-        call?.enqueue(object: Callback<SignupResponse> {
-            override fun onResponse(call: Call<SignupResponse>?, response: retrofit2.Response<SignupResponse>?) {
+        call?.enqueue(object: Callback<ResponseData> {
+            override fun onResponse(call: Call<ResponseData>?, response: retrofit2.Response<ResponseData>?) {
                 root!!.progressBar.visibility = View.GONE
                 if(response!!.isSuccessful) Toast.makeText(context,  response.body().toString(), Toast.LENGTH_LONG).show()
             }
-            override fun onFailure(call: Call<SignupResponse>?, t: Throwable?) {
+            override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
                 root!!.progressBar.visibility = View.GONE
                 Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
             }

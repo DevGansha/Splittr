@@ -1,10 +1,13 @@
 package com.example.androidproject.network
 
+import com.example.androidproject.models.list.CreateListRequest
+import com.example.androidproject.models.list.ListData
+import com.example.androidproject.models.list.MyListRequest
 import com.example.androidproject.models.login.Login
-import com.example.androidproject.models.login.data
 import com.example.androidproject.models.login.loginData
 import com.example.androidproject.models.signup.SignupRequest
-import com.example.androidproject.models.signup.SignupResponse
+import com.example.androidproject.models.signup.ResponseData
+import com.example.androidproject.models.specificlist.GetSpecificListRequest
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -14,13 +17,17 @@ interface APIService {
     fun login(@Body login: Login): Call<loginData>?
 
     @POST("SIGNUP.php")
-    fun signup(@Body signupRequest: SignupRequest): Call<SignupResponse>?
+    fun signup(@Body signupRequest: SignupRequest): Call<ResponseData>?
 
+    @POST("LISTSget.php")
+    fun getMyList(@Body myListRequest: MyListRequest): Call<ListData>?
 
-    @FormUrlEncoded
     @POST("SHAREDLISTSget.php")
-    fun sharedListGet(
-        @Field("user_id") user_id: Int?,
-        @Field("format") format: String?
-    ): Call<data>
+    fun getSharedList(@Body myListRequest: MyListRequest): Call<ListData>?
+
+    @POST("LISTadd.php")
+    fun createList(@Body createListRequest: CreateListRequest): Call<ResponseData>?
+
+    @POST("LIST_EMAILSget.php")
+    fun getListEmails(@Body getSpecificListRequest: GetSpecificListRequest): Call<com.example.androidproject.models.specificlist.ListData>
 }
