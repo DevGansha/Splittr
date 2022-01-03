@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_listDetailFragment_to_addExpenseFragment"
             app:destination="@id/addExpenseFragment" />
+        <action
+            android:id="@+id/action_listDetailFragment_to_refundFragment"
+            app:destination="@id/refundFragment" />
     </fragment>
     <fragment
         android:id="@+id/addExpenseFragment"
@@ -54,5 +57,14 @@
         <action
             android:id="@+id/action_addExpenseFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/refundFragment"
+        android:name="com.example.androidproject.fragments.RefundFragment"
+        android:label="fragment_refund"
+        tools:layout="@layout/fragment_refund" >
+        <action
+            android:id="@+id/action_refundFragment_to_listDetailFragment"
+            app:destination="@id/listDetailFragment" />
     </fragment>
 </navigation>

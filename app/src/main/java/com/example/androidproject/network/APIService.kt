@@ -1,10 +1,14 @@
 package com.example.androidproject.network
 
+import com.example.androidproject.models.expense.AddExpenseRequest
+import com.example.androidproject.models.item.ItemRequest
+import com.example.androidproject.models.item.ResponseDataItem
 import com.example.androidproject.models.list.CreateListRequest
 import com.example.androidproject.models.list.ListData
 import com.example.androidproject.models.list.MyListRequest
 import com.example.androidproject.models.login.Login
 import com.example.androidproject.models.login.loginData
+import com.example.androidproject.models.refund.RefundListData
 import com.example.androidproject.models.signup.SignupRequest
 import com.example.androidproject.models.signup.ResponseData
 import com.example.androidproject.models.specificlist.GetSpecificListRequest
@@ -30,4 +34,13 @@ interface APIService {
 
     @POST("LIST_EMAILSget.php")
     fun getListEmails(@Body getSpecificListRequest: GetSpecificListRequest): Call<com.example.androidproject.models.specificlist.ListData>
+
+    @POST("ITEMadd.php")
+    fun addExpense(@Body addExpenseRequest: AddExpenseRequest): Call<ResponseData>?
+
+    @POST("ITEMSget.php")
+    fun itemsGet(@Body itemRequest: ItemRequest): Call<ResponseDataItem>?
+
+    @POST("REFUNDSget.php")
+    fun getRefunds(@Body getSpecificListRequest: GetSpecificListRequest): Call<RefundListData>?
 }

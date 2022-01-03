@@ -14,13 +14,11 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidproject.EndPoints
 import com.example.androidproject.R
-import com.example.androidproject.activities.MainActivity
 import com.example.androidproject.adapters.ListRecyclerViewAdapter
 import com.example.androidproject.models.list.ListData
 import com.example.androidproject.models.list.MyListRequest
 import com.example.androidproject.models.list.data
 import com.example.androidproject.network.APIService
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -72,7 +70,11 @@ class HomeFragment : Fragment() {
         call?.enqueue(object: Callback<ListData> {
             override fun onResponse(call: Call<ListData>?, response: retrofit2.Response<ListData>?) {
                 if(response!!.isSuccessful) {
-                    myLists = response.body().data!!.toMutableList()
+                    if(response.body().data!!.size > 2) {
+                        myLists = response.body().data!!.subList(0, 3).toMutableList()
+                    }else{
+                        myLists = response.body().data!!.toMutableList()
+                    }
                     if(myLists.size > 0) {
                         root!!.myList_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                         root!!.myList_rv.adapter = ListRecyclerViewAdapter(myLists)
@@ -107,7 +109,11 @@ class HomeFragment : Fragment() {
         call?.enqueue(object: Callback<ListData> {
             override fun onResponse(call: Call<ListData>?, response: retrofit2.Response<ListData>?) {
                 if(response!!.isSuccessful) {
-                    myLists = response.body().data!!.toMutableList()
+                    if(response.body().data!!.size > 2) {
+                        myLists = response.body().data!!.subList(0, 3).toMutableList()
+                    }else{
+                        myLists = response.body().data!!.toMutableList()
+                    }
                     if(myLists.size > 0) {
                         root!!.sharedList_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                         root!!.sharedList_rv.adapter = ListRecyclerViewAdapter(myLists)

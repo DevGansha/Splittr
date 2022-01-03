@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="60dp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="?android:textColorPrimary"
         android:textSize="22sp"/>
 
     <com.google.android.material.button.MaterialButton

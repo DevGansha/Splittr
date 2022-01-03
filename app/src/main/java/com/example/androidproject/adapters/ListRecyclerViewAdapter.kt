@@ -39,7 +39,7 @@ class ListRecyclerViewAdapter( val peopleList: List<data>) : RecyclerView.Adapte
         @RequiresApi(Build.VERSION_CODES.O)
         @SuppressLint("SetTextI18n")
         fun bindItems(data: data) {
-            var date=  LocalDate.parse(data.creation_date.split(" ")[0], DateTimeFormatter.ISO_DATE)
+            val date=  LocalDate.parse(data.creation_date.split(" ")[0], DateTimeFormatter.ISO_DATE)
             val formattedDate = date.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"))
             itemView.listName.text = data.list_name
             itemView.listDescription.text = "List made by ${data.username}"

@@ -8,15 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidproject.EndPoints
 import com.example.androidproject.R
-import com.example.androidproject.models.list.CreateListRequest
-import com.example.androidproject.models.signup.ResponseData
+import com.example.androidproject.adapters.ItemRecyclerViewAdapter
+import com.example.androidproject.adapters.ListRecyclerViewAdapter
+import com.example.androidproject.models.item.ItemRequest
+import com.example.androidproject.models.item.ResponseDataItem
+import com.example.androidproject.models.item.data
 import com.example.androidproject.models.specificlist.GetSpecificListRequest
 import com.example.androidproject.models.specificlist.ListData
 import com.example.androidproject.network.APIService
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.fragment_list_detail.view.*
-import kotlinx.android.synthetic.main.fragment_new_list.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -25,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ListDetailFragment : Fragment() {
 
     var root: View?=null
+    var myLists = mutableListOf<data>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +43,7 @@ class ListDetailFragment : Fragment() {
         }
 
         root!!.showRefundsBtn.setOnClickListener {
-
+            Navigation.findNavController(root!!).navigate(R.id.refundFragment)
         }
         return root
     }
@@ -46,6 +51,8 @@ class ListDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getUserEmails()
+        getItems()
+
     }
 
     fun getUserEmails(){
@@ -53,9 +60,6 @@ class ListDetailFragment : Fragment() {
             .baseUrl(EndPoints.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-        val sharedPref = activity?.getSharedPreferences("splitter", Context.MODE_PRIVATE) ?: return
-        val user_id = sharedPref.getInt("user_id", 0)
 
         //Defining retrofit api service
         val service = retrofit.create(APIService::class.java)
@@ -82,4 +86,35 @@ class ListDetailFragment : Fragment() {
             }
         })
     }
+
+    fun getItems(){
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(EndPoints.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        //Defining retrofit api service
+        val service = retrofit.create(APIService::class.java)
+
+        val itemRequest = ItemRequest(46)
+        //defining the call
+        val call: Call<ResponseDataItem>? = service.itemsGet(itemRequest)
+
+        call?.enqueue(object: Callback<ResponseDataItem> {
+            override fun onResponse(call: Call<ResponseDataItem>?, response: retrofit2.Response<ResponseDataItem>?) {
+                if(response!!.isSuccessful) {
+                    myLists = response.body().data!!.toMutableList()
+                    if(myLists.size > 0) {
+                        root!!.items_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        root!!.items_rv.adapter = ItemRecyclerViewAdapter(myLists)
+                    }
+                }
+            }
+            override fun onFailure(call: Call<ResponseDataItem>?, t: Throwable?) {
+                Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+
 }
