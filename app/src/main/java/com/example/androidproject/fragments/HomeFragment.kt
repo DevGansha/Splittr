@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidproject.EndPoints
 import com.example.androidproject.R
 import com.example.androidproject.adapters.ListRecyclerViewAdapter
+import com.example.androidproject.adapters.OnItemClickedListener
 import com.example.androidproject.models.list.ListData
 import com.example.androidproject.models.list.MyListRequest
 import com.example.androidproject.models.list.data
@@ -25,7 +26,7 @@ import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnItemClickedListener {
 
     var root: View?=null
     var myLists = mutableListOf<data>()
@@ -77,7 +78,7 @@ class HomeFragment : Fragment() {
                     }
                     if(myLists.size > 0) {
                         root!!.myList_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                        root!!.myList_rv.adapter = ListRecyclerViewAdapter(myLists)
+                        root!!.myList_rv.adapter = ListRecyclerViewAdapter(myLists, this@HomeFragment)
                     }else{
                         root!!.myList_rv.visibility = View.GONE
                         root!!.myList_empty.visibility = View.VISIBLE
@@ -116,7 +117,7 @@ class HomeFragment : Fragment() {
                     }
                     if(myLists.size > 0) {
                         root!!.sharedList_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                        root!!.sharedList_rv.adapter = ListRecyclerViewAdapter(myLists)
+                        root!!.sharedList_rv.adapter = ListRecyclerViewAdapter(myLists, this@HomeFragment)
                     }else{
                         root!!.sharedList_rv.visibility = View.GONE
                         root!!.sharedList_empty.visibility = View.VISIBLE
@@ -129,4 +130,12 @@ class HomeFragment : Fragment() {
         })
     }
 
+    override fun onItemClicked(data: data) {
+        val sharedPref = activity?.getSharedPreferences("splitter", Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putInt("list_id", data.id)
+            apply()
+        }
+        Navigation.findNavController(root!!).navigate(R.id.listDetailFragment)
+    }
 }

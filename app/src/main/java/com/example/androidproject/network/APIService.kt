@@ -4,6 +4,7 @@ import com.example.androidproject.models.expense.AddExpenseRequest
 import com.example.androidproject.models.item.ItemRequest
 import com.example.androidproject.models.item.ResponseDataItem
 import com.example.androidproject.models.list.CreateListRequest
+import com.example.androidproject.models.list.EditListRequest
 import com.example.androidproject.models.list.ListData
 import com.example.androidproject.models.list.MyListRequest
 import com.example.androidproject.models.login.Login
@@ -43,4 +44,10 @@ interface APIService {
 
     @POST("REFUNDSget.php")
     fun getRefunds(@Body getSpecificListRequest: GetSpecificListRequest): Call<RefundListData>?
+
+    @POST("LISTdelete.php")
+    fun deleteList(@Body getSpecificListRequest: GetSpecificListRequest): Call<ResponseData>?
+
+    @POST("LISTedit.php")
+    fun editList(@Body editListRequest: EditListRequest): Call<ResponseData>?
 }

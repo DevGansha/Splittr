@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.li_item.view.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class ListRecyclerViewAdapter( val peopleList: List<data>) : RecyclerView.Adapter<ListRecyclerViewAdapter.ViewHolder>() {
+class ListRecyclerViewAdapter( val dataList: List<data>, val itemClickListener: OnItemClickedListener) : RecyclerView.Adapter<ListRecyclerViewAdapter.ViewHolder>() {
 
     //this method is returning the view for each item in the list
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListRecyclerViewAdapter.ViewHolder {
@@ -26,27 +26,31 @@ class ListRecyclerViewAdapter( val peopleList: List<data>) : RecyclerView.Adapte
     //this method is binding the data on the list
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ListRecyclerViewAdapter.ViewHolder, position: Int) {
-        holder.bindItems(peopleList[position])
+        holder.bindItems(dataList[position], itemClickListener)
     }
 
     //this method is giving the size of the list
     override fun getItemCount(): Int {
-        return peopleList.size
+        return dataList.size
     }
 
     //the class is hodling the list view
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @RequiresApi(Build.VERSION_CODES.O)
         @SuppressLint("SetTextI18n")
-        fun bindItems(data: data) {
+        fun bindItems(data: data,clickListener: OnItemClickedListener) {
             val date=  LocalDate.parse(data.creation_date.split(" ")[0], DateTimeFormatter.ISO_DATE)
             val formattedDate = date.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"))
             itemView.listName.text = data.list_name
             itemView.listDescription.text = "List made by ${data.username}"
             itemView.listDate.text = "Made on $formattedDate"
             itemView.setOnClickListener {
-                Navigation.findNavController(it).navigate(R.id.listDetailFragment)
+                clickListener.onItemClicked(data)
             }
         }
     }
+}
+
+interface OnItemClickedListener{
+    fun onItemClicked(data: data)
 }

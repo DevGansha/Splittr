@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/border_bg"
+    android:padding="04dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="08dp"
+    android:layout_marginTop="08dp"
+    android:layout_marginEnd="08dp">
+
+    <TextView
+        android:id="@+id/listName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="04dp"
+        android:text="@string/list_name"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/listDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listName"
+        android:text="@string/list_description"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/listDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="04dp"
+        android:text="@string/create_list"
+        android:textSize="14sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/editlist"
+        android:layout_width="108dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="08dp"
+        android:background="@drawable/edit_btn"
+        android:text="Edit List"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listDescription" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/deletelist"
+        android:layout_width="127dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="08dp"
+        android:background="@drawable/button_bg"
+        android:text="Delete List"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintEnd_toStartOf="@+id/sharelist"
+        app:layout_constraintStart_toEndOf="@+id/editlist"
+        app:layout_constraintTop_toBottomOf="@+id/listDescription" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sharelist"
+        android:layout_width="114dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="08dp"
+        android:textSize="11sp"
+        android:background="@drawable/button_bg"
+        android:text="Share List"
+        android:textColor="?android:textColorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/AndroidProject/app/src/main/res/drawable/border_bg.xml" value="0.22552083333333334" />
         <entry key="..\:/AndroidProject/app/src/main/res/drawable/button_bg.xml" value="0.22552083333333334" />
+        <entry key="..\:/AndroidProject/app/src/main/res/drawable/edit_btn.xml" value="0.22552083333333334" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_home.xml" value="0.18" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_main.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/fr_login.xml" value="0.209375" />
@@ -22,6 +23,7 @@
         <entry key="..\:/AndroidProject/app/src/main/res/layout/fragment_sign_up.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/li_item.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/li_item_list_detail.xml" value="0.33" />
+        <entry key="..\:/AndroidProject/app/src/main/res/layout/mylists_item.xml" value="0.25" />
         <entry key="..\:/AndroidProject/app/src/main/res/menu/bottom_nav_menu.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/app/src/main/res/xml/network_security_config.xml" value="0.125" />
       </map>

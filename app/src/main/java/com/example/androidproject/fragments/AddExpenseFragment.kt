@@ -34,13 +34,20 @@ class AddExpenseFragment : Fragment() {
             if(root!!.emailTxt.text.toString().isNotEmpty() && root!!.paidForWhoTxt.text.toString().isNotEmpty() &&
                 root!!.descTxt.text.toString().isNotEmpty() && root!!.priceTxt.text.toString().isNotEmpty()) {
                 if (isEmailExists(root!!.emailTxt.text.toString().trim(), root!!.paidForWhoTxt.text.toString().trim()))
-                    addItemInList(root!!.emailTxt.text.toString().trim(), 46, root!!.descTxt.text.toString().trim(), Integer.valueOf(root!!.priceTxt.text.toString().trim()))
+                    addItemInList(root!!.emailTxt.text.toString().trim(), findListId(), root!!.descTxt.text.toString().trim(), Integer.valueOf(root!!.priceTxt.text.toString().trim()))
             }else{
                 Toast.makeText(context, "Must input all fields", Toast.LENGTH_LONG).show()
             }
         }
 
         return root
+    }
+
+    fun findListId(): Int{
+        val sharedPref = activity?.getSharedPreferences("splitter", Context.MODE_PRIVATE)
+        val list_id = sharedPref!!.getInt("list_id", 0)
+
+        return list_id
     }
 
     fun isEmailExists(first_email: String, second_email: String): Boolean{

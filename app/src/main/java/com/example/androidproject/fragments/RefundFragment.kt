@@ -1,5 +1,6 @@
 package com.example.androidproject.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -47,7 +48,7 @@ class RefundFragment : Fragment() {
         //Defining retrofit api service
         val service = retrofit.create(APIService::class.java)
 
-        val specificListRequest = GetSpecificListRequest(46)
+        val specificListRequest = GetSpecificListRequest(findListId())
         //defining the call
         val call: Call<RefundListData>? = service.getRefunds(specificListRequest)
 
@@ -90,5 +91,12 @@ class RefundFragment : Fragment() {
 
             }
         }
+    }
+
+    fun findListId(): Int{
+        val sharedPref = activity?.getSharedPreferences("splitter", Context.MODE_PRIVATE)
+        val list_id = sharedPref!!.getInt("list_id", 0)
+
+        return list_id
     }
 }

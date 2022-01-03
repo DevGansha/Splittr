@@ -54,6 +54,12 @@ class ListDetailFragment : Fragment() {
         getItems()
 
     }
+    fun findListId(): Int{
+        val sharedPref = activity?.getSharedPreferences("splitter", Context.MODE_PRIVATE)
+        val list_id = sharedPref!!.getInt("list_id", 0)
+
+        return list_id
+    }
 
     fun getUserEmails(){
         val retrofit: Retrofit = Retrofit.Builder()
@@ -64,7 +70,7 @@ class ListDetailFragment : Fragment() {
         //Defining retrofit api service
         val service = retrofit.create(APIService::class.java)
 
-        val specificListRequest = GetSpecificListRequest(46)
+        val specificListRequest = GetSpecificListRequest(findListId())
         //defining the call
         val call: Call<ListData> = service.getListEmails(specificListRequest)
 
@@ -96,14 +102,14 @@ class ListDetailFragment : Fragment() {
         //Defining retrofit api service
         val service = retrofit.create(APIService::class.java)
 
-        val itemRequest = ItemRequest(46)
+        val itemRequest = ItemRequest(findListId())
         //defining the call
         val call: Call<ResponseDataItem>? = service.itemsGet(itemRequest)
 
         call?.enqueue(object: Callback<ResponseDataItem> {
             override fun onResponse(call: Call<ResponseDataItem>?, response: retrofit2.Response<ResponseDataItem>?) {
                 if(response!!.isSuccessful) {
-                    myLists = response.body().data!!.toMutableList()
+                    myLists.addAll(response.body().data!!) //.toMutableList()
                     if(myLists.size > 0) {
                         root!!.items_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                         root!!.items_rv.adapter = ItemRecyclerViewAdapter(myLists)
