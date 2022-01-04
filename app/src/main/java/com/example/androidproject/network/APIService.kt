@@ -3,10 +3,7 @@ package com.example.androidproject.network
 import com.example.androidproject.models.expense.AddExpenseRequest
 import com.example.androidproject.models.item.ItemRequest
 import com.example.androidproject.models.item.ResponseDataItem
-import com.example.androidproject.models.list.CreateListRequest
-import com.example.androidproject.models.list.EditListRequest
-import com.example.androidproject.models.list.ListData
-import com.example.androidproject.models.list.MyListRequest
+import com.example.androidproject.models.list.*
 import com.example.androidproject.models.login.Login
 import com.example.androidproject.models.login.loginData
 import com.example.androidproject.models.refund.RefundListData
@@ -50,4 +47,7 @@ interface APIService {
 
     @POST("LISTedit.php")
     fun editList(@Body editListRequest: EditListRequest): Call<ResponseData>?
+
+    @POST("LISTshare.php")
+    fun shareList(@Body shareListRequest: shareListRequest): Call<ResponseData>?
 }

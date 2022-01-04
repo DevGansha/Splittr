@@ -35,9 +35,6 @@ class myListsFragment : Fragment(), OnItemClickListener {
 
     var root: View?=null
     var myLists = mutableListOf<data>()
-    var list_obj: Int?= null
-    var list_name: String?= null
-    var list_description: String?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -109,6 +106,9 @@ class myListsFragment : Fragment(), OnItemClickListener {
         }
         if(btnClick.equals("EDIT", true)){
             Navigation.findNavController(root!!).navigate(myListsFragmentDirections.actionMyListsFragmentToNewListFragment("EDIT", listData))
+        }
+        if(btnClick.equals("SHARE", true)){
+            Navigation.findNavController(root!!).navigate(myListsFragmentDirections.actionMyListsFragmentToShareListFragment(listData.id))
         }
     }
 

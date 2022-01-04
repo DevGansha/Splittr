@@ -25,5 +25,6 @@
     <string name="description">Description</string>
     <string name="price">Price</string>
     <string name="paid_for_who">Paid for who</string>
+    <string name="share_list">Share List</string>
 
 </resources>

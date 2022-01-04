@@ -6,6 +6,7 @@
         <entry key="..\:/AndroidProject/app/src/main/res/drawable/border_bg.xml" value="0.22552083333333334" />
         <entry key="..\:/AndroidProject/app/src/main/res/drawable/button_bg.xml" value="0.22552083333333334" />
         <entry key="..\:/AndroidProject/app/src/main/res/drawable/edit_btn.xml" value="0.22552083333333334" />
+        <entry key="..\:/AndroidProject/app/src/main/res/drawable/share_btn.xml" value="0.22552083333333334" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_home.xml" value="0.18" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/activity_main.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/fr_login.xml" value="0.209375" />
@@ -19,6 +20,7 @@
         <entry key="..\:/AndroidProject/app/src/main/res/layout/fragment_new_list.xml" value="0.2" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/fragment_refund.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/fragment_settings.xml" value="0.209375" />
+        <entry key="..\:/AndroidProject/app/src/main/res/layout/fragment_share_list.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/fragment_sign_in.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/fragment_sign_up.xml" value="0.209375" />
         <entry key="..\:/AndroidProject/app/src/main/res/layout/li_item.xml" value="0.209375" />

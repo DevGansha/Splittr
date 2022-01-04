@@ -32,6 +32,13 @@
                 android:name="list_obj"
                 app:argType="com.example.androidproject.models.list.data" />
         </action>
+        <action
+            android:id="@+id/action_myListsFragment_to_shareListFragment"
+            app:destination="@id/shareListFragment">
+            <argument
+                android:name="list_id"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -78,4 +85,9 @@
             android:id="@+id/action_refundFragment_to_listDetailFragment"
             app:destination="@id/listDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/shareListFragment"
+        android:name="com.example.androidproject.fragments.ShareListFragment"
+        android:label="fragment_share_list"
+        tools:layout="@layout/fragment_share_list" />
 </navigation>
