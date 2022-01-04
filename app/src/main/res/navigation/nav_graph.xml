@@ -15,7 +15,11 @@
             app:destination="@id/newListFragment" />
         <action
             android:id="@+id/action_homeFragment_to_listDetailFragment"
-            app:destination="@id/listDetailFragment" />
+            app:destination="@id/listDetailFragment" >
+            <argument
+                android:name="list_obj"
+                app:argType="com.example.androidproject.models.list.data" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/myListsFragment"

@@ -1,36 +1,40 @@
 package com.example.androidproject.fragments
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidproject.EndPoints
 import com.example.androidproject.R
 import com.example.androidproject.adapters.ItemRecyclerViewAdapter
-import com.example.androidproject.adapters.ListRecyclerViewAdapter
 import com.example.androidproject.models.item.ItemRequest
 import com.example.androidproject.models.item.ResponseDataItem
 import com.example.androidproject.models.item.data
 import com.example.androidproject.models.specificlist.GetSpecificListRequest
 import com.example.androidproject.models.specificlist.ListData
 import com.example.androidproject.network.APIService
-import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.fragment_list_detail.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class ListDetailFragment : Fragment() {
 
     var root: View?=null
     var myLists = mutableListOf<data>()
+    var list_obj: com.example.androidproject.models.list.data?= null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +42,14 @@ class ListDetailFragment : Fragment() {
         // Inflate the layout for this fragment
         root =  inflater.inflate(R.layout.fragment_list_detail, container, false)
 
+        list_obj = arguments?.getParcelable<com.example.androidproject.models.list.data>("list_obj")
+
+        val date=  LocalDate.parse(list_obj!!.creation_date.split(" ")[0], DateTimeFormatter.ISO_DATE)
+        val formattedDate = date.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"))
+
+        root!!.listName.text = list_obj!!.list_name
+        root!!.listDescription.text = list_obj!!.omschrijving
+        root!!.listDate.text = "Made on $formattedDate"
         root!!.addExpenseBtn.setOnClickListener {
             Navigation.findNavController(root!!).navigate(R.id.addExpenseFragment)
         }

@@ -146,6 +146,6 @@ class HomeFragment : Fragment(), OnItemClickedListener {
             putInt("list_id", data.id)
             apply()
         }
-        Navigation.findNavController(root!!).navigate(R.id.listDetailFragment)
+        Navigation.findNavController(root!!).navigate(HomeFragmentDirections.actionHomeFragmentToListDetailFragment(data))
     }
 }
