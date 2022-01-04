@@ -21,7 +21,18 @@
         android:id="@+id/myListsFragment"
         android:name="com.example.androidproject.fragments.myListsFragment"
         android:label="fragment_my_lists"
-        tools:layout="@layout/fragment_my_lists" />
+        tools:layout="@layout/fragment_my_lists" >
+        <action
+            android:id="@+id/action_myListsFragment_to_newListFragment"
+            app:destination="@id/newListFragment">
+            <argument
+                android:name="action"
+                app:argType="string" />
+            <argument
+                android:name="list_obj"
+                app:argType="com.example.androidproject.models.list.data" />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.androidproject.fragments.settingsFragment"

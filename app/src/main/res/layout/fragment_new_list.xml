@@ -22,8 +22,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/listNameTxt"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/list_name" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -40,8 +39,7 @@
             android:id="@+id/listDescTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?android:textColorPrimary"
-            android:hint="@string/list_description" />
+            android:textColor="?android:textColorPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -56,5 +54,14 @@
         android:text="@string/add_list"
         android:textColor="@color/white"/>
 
-
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progressBar_newList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:indeterminateTint="@color/green"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

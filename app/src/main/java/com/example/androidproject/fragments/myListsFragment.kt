@@ -8,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.NavDirections
+import androidx.navigation.NavGraph
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidproject.EndPoints
 import com.example.androidproject.R
@@ -21,6 +24,8 @@ import com.example.androidproject.models.signup.ResponseData
 import com.example.androidproject.models.specificlist.GetSpecificListRequest
 import com.example.androidproject.network.APIService
 import kotlinx.android.synthetic.main.fragment_my_lists.view.*
+import kotlinx.android.synthetic.main.fragment_my_lists.view.progressBar
+import kotlinx.android.synthetic.main.fragment_sign_in.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -30,6 +35,9 @@ class myListsFragment : Fragment(), OnItemClickListener {
 
     var root: View?=null
     var myLists = mutableListOf<data>()
+    var list_obj: Int?= null
+    var list_name: String?= null
+    var list_description: String?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +45,10 @@ class myListsFragment : Fragment(), OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         root =  inflater.inflate(R.layout.fragment_my_lists, container, false)
+
+        root!!.create_new_list.setOnClickListener {
+            Navigation.findNavController(root!!).navigate(R.id.newListFragment)
+        }
         return root
     }
 
@@ -62,9 +74,13 @@ class myListsFragment : Fragment(), OnItemClickListener {
         //defining the call
         val call: Call<ListData>? = service.getMyList(myListRequest)
 
+        root!!.progressBar.visibility = View.VISIBLE
+
         call?.enqueue(object: Callback<ListData> {
             override fun onResponse(call: Call<ListData>?, response: retrofit2.Response<ListData>?) {
                 if(response!!.isSuccessful) {
+                    myLists.clear()
+                    root!!.progressBar.visibility = View.GONE
                     myLists.addAll(response.body().data!!) //.toMutableList()
                     if(myLists.size > 0) {
                         root!!.myList_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -76,6 +92,7 @@ class myListsFragment : Fragment(), OnItemClickListener {
                 }
             }
             override fun onFailure(call: Call<ListData>?, t: Throwable?) {
+                root!!.progressBar.visibility = View.GONE
                 Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
             }
         })
@@ -89,6 +106,9 @@ class myListsFragment : Fragment(), OnItemClickListener {
         }
         if(btnClick.equals("DELETE", true)){
             deleteList()
+        }
+        if(btnClick.equals("EDIT", true)){
+            Navigation.findNavController(root!!).navigate(myListsFragmentDirections.actionMyListsFragmentToNewListFragment("EDIT", listData))
         }
     }
 
@@ -112,15 +132,19 @@ class myListsFragment : Fragment(), OnItemClickListener {
         //defining the call
         val call: Call<ResponseData>? = service.deleteList(specificListRequest)
 
+        root!!.progressBar.visibility = View.VISIBLE
+
         call!!.enqueue(object: Callback<ResponseData> {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<ResponseData>?, response: retrofit2.Response<ResponseData>?) {
                 if(response!!.isSuccessful) {
+                    root!!.progressBar.visibility = View.GONE
                     myLists.clear()
                     updateMyLists()
                 }
             }
             override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
+                root!!.progressBar.visibility = View.GONE
                 Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
             }
         })
@@ -142,14 +166,18 @@ class myListsFragment : Fragment(), OnItemClickListener {
         //defining the call
         val call: Call<ListData>? = service.getMyList(myListRequest)
 
+        root!!.progressBar.visibility = View.VISIBLE
+
         call?.enqueue(object: Callback<ListData> {
             override fun onResponse(call: Call<ListData>?, response: retrofit2.Response<ListData>?) {
                 if(response!!.isSuccessful) {
+                    root!!.progressBar.visibility = View.GONE
                     myLists.addAll(response.body().data!!) //.toMutableList()
                     root!!.myList_rv.adapter!!.notifyDataSetChanged()
                 }
             }
             override fun onFailure(call: Call<ListData>?, t: Throwable?) {
+                root!!.progressBar.visibility = View.GONE
                 Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
             }
         })

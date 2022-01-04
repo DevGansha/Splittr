@@ -21,6 +21,10 @@ import com.example.androidproject.models.list.MyListRequest
 import com.example.androidproject.models.list.data
 import com.example.androidproject.network.APIService
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.myList_empty
+import kotlinx.android.synthetic.main.fragment_home.view.myList_rv
+import kotlinx.android.synthetic.main.fragment_home.view.progressBar
+import kotlinx.android.synthetic.main.fragment_my_lists.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -68,9 +72,11 @@ class HomeFragment : Fragment(), OnItemClickedListener {
         //defining the call
         val call: Call<ListData>? = service.getMyList(myListRequest)
 
+        root!!.progressBar.visibility = View.VISIBLE
         call?.enqueue(object: Callback<ListData> {
             override fun onResponse(call: Call<ListData>?, response: retrofit2.Response<ListData>?) {
                 if(response!!.isSuccessful) {
+                    root!!.progressBar.visibility = View.GONE
                     if(response.body().data!!.size > 2) {
                         myLists = response.body().data!!.subList(0, 3).toMutableList()
                     }else{
@@ -86,6 +92,7 @@ class HomeFragment : Fragment(), OnItemClickedListener {
                 }
             }
             override fun onFailure(call: Call<ListData>?, t: Throwable?) {
+                root!!.progressBar.visibility = View.GONE
                 Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
             }
         })
@@ -107,9 +114,11 @@ class HomeFragment : Fragment(), OnItemClickedListener {
         //defining the call
         val call: Call<ListData>? = service.getSharedList(myListRequest)
 
+        root!!.progressBar.visibility = View.VISIBLE
         call?.enqueue(object: Callback<ListData> {
             override fun onResponse(call: Call<ListData>?, response: retrofit2.Response<ListData>?) {
                 if(response!!.isSuccessful) {
+                    root!!.progressBar.visibility = View.GONE
                     if(response.body().data!!.size > 2) {
                         myLists = response.body().data!!.subList(0, 3).toMutableList()
                     }else{
@@ -125,6 +134,7 @@ class HomeFragment : Fragment(), OnItemClickedListener {
                 }
             }
             override fun onFailure(call: Call<ListData>?, t: Throwable?) {
+                root!!.progressBar.visibility = View.GONE
                 Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
             }
         })
