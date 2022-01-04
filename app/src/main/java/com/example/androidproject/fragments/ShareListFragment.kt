@@ -47,6 +47,9 @@ class ShareListFragment : Fragment() {
                 if (doesEmailExists(root!!.shareListTxt.text.toString().trim())) {
                     emailToDisplay += root!!.shareListTxt.text.toString().trim()
                     root!!.emailStrings.text = emailToDisplay
+                }else{
+                    root!!.shareListTxt.setFocusable(true)
+                    Toast.makeText(context,"This email has not an account yet.", Toast.LENGTH_LONG).show()
                 }
             }
         }

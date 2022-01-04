@@ -1,15 +1,18 @@
 package com.example.androidproject.fragments
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidproject.EndPoints
 import com.example.androidproject.R
+import com.example.androidproject.adapters.RefundRecyclerViewAdapter
 import com.example.androidproject.models.refund.RefundListData
 import com.example.androidproject.models.refund.data
 import com.example.androidproject.models.specificlist.GetSpecificListRequest
@@ -53,13 +56,13 @@ class RefundFragment : Fragment() {
         val call: Call<RefundListData>? = service.getRefunds(specificListRequest)
 
         call?.enqueue(object: Callback<RefundListData> {
+            @RequiresApi(Build.VERSION_CODES.N)
             override fun onResponse(call: Call<RefundListData>?, response: retrofit2.Response<RefundListData>?) {
                 if(response!!.isSuccessful) {
                     refundsLists = response.body().data!!.toMutableList()
                     if(refundsLists.size > 0) {
                         root!!.refunds_list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                        getRefundsList(refundsLists)
-                       // root!!.items_rv.adapter = RefundRecyclerViewAdapter(refundsLists)
+                        root!!.refunds_list.adapter = RefundRecyclerViewAdapter(getRefundsList(refundsLists))
                     }
                 }
             }
@@ -69,28 +72,35 @@ class RefundFragment : Fragment() {
         })
     }
 
-    fun getRefundsList(refundsLists: List<data>){
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun getRefundsList(refundsLists: List<data>): List<String>{
+
         var refundsListString = ArrayList<String>()
-        var refundFrom = ArrayList<String>()
-        var refundTo = ArrayList<String>()
-
         if(refundsLists.size > 0) {
-            refundFrom.add(refundsLists.get(0).username_from)
-            refundTo.add(refundsLists.get(0).username_to)
+            val amountLog = HashMap<String, Int>()
 
-            for (refundData in refundsLists) {
-                if (!refundFrom.contains(refundData.username_from)) {
-                    refundFrom.add(refundData.username_from)
+            for(refund in refundsLists){
+                val string = refund.username_to + "-" + refund.username_from
+                val reverseString = refund.username_from + "-"+ refund.username_to
+                if(amountLog.containsKey(string)) {
+                    val amount = refund.waarde.toDouble().toInt() + amountLog.getValue(string).toInt()
+                    amountLog.put(string, amount)
+                }else if(amountLog.containsKey(reverseString)){
+                    val amount = refund.waarde.toDouble().toInt() - amountLog.getValue(reverseString).toInt()
+                    amountLog.put(reverseString, amount * (-1))
                 }
-                if (!refundTo.contains(refundData.username_to)) {
-                    refundTo.add(refundData.username_to)
+                else{
+                    amountLog.put(string, refund.waarde.toDouble().toInt())
                 }
             }
 
-            for (refundData in refundsLists) {
-
+            amountLog.forEach { s, i ->
+                var str = "User " + s.substringBefore("-") + " owes user " + s.substringAfter("-") + " : " + i.toString()
+                refundsListString.add(str)
             }
         }
+
+        return refundsListString.toMutableList()
     }
 
     fun findListId(): Int{
