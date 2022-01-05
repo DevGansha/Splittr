@@ -63,7 +63,7 @@
         app:layout_constraintStart_toStartOf="@id/emailStrings"
         app:layout_constraintEnd_toEndOf="@id/emailStrings"
         android:background="@drawable/button_bg"
-        android:text="@string/shared_list"
+        android:text="@string/share_list"
         android:textColor="@color/white"/>
 
     <ProgressBar

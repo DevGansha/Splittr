@@ -37,6 +37,9 @@ class MyListsItemRecyclerAdapter( val dataList: List<data>, val itemClickListene
             itemView.listName.text = data.list_name
             itemView.listDescription.text = data.omschrijving
             itemView.listDate.text = "Made on ${data.creation_date}"
+            itemView.setOnClickListener{
+                clickListener.onItemClicked("CLICK", data)
+            }
             itemView.deletelist.setOnClickListener {
                 clickListener.onItemClicked("DELETE", data)
             }

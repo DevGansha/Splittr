@@ -23,7 +23,11 @@ import com.example.androidproject.models.list.data
 import com.example.androidproject.models.signup.ResponseData
 import com.example.androidproject.models.specificlist.GetSpecificListRequest
 import com.example.androidproject.network.APIService
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.fragment_my_lists.view.*
+import kotlinx.android.synthetic.main.fragment_my_lists.view.create_new_list
+import kotlinx.android.synthetic.main.fragment_my_lists.view.myList_empty
+import kotlinx.android.synthetic.main.fragment_my_lists.view.myList_rv
 import kotlinx.android.synthetic.main.fragment_my_lists.view.progressBar
 import kotlinx.android.synthetic.main.fragment_sign_in.view.*
 import retrofit2.Call
@@ -52,6 +56,7 @@ class myListsFragment : Fragment(), OnItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getMyLists()
+        getSharedLists()
     }
 
 
@@ -95,85 +100,35 @@ class myListsFragment : Fragment(), OnItemClickListener {
         })
     }
 
-    override fun onItemClicked(btnClick:String, listData: data) {
-        val sharedPref = activity?.getSharedPreferences("splitter", Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putInt("list_id", listData.id)
-            apply()
-        }
-        if(btnClick.equals("DELETE", true)){
-            deleteList()
-        }
-        if(btnClick.equals("EDIT", true)){
-            Navigation.findNavController(root!!).navigate(myListsFragmentDirections.actionMyListsFragmentToNewListFragment("EDIT", listData))
-        }
-        if(btnClick.equals("SHARE", true)){
-            Navigation.findNavController(root!!).navigate(myListsFragmentDirections.actionMyListsFragmentToShareListFragment(listData.id))
-        }
-    }
-
-    fun findListId(): Int{
-        val sharedPref = activity?.getSharedPreferences("splitter", Context.MODE_PRIVATE)
-        val list_id = sharedPref!!.getInt("list_id", 0)
-
-        return list_id
-    }
-
-    fun deleteList(){
+    fun getSharedLists(){
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(EndPoints.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-        //Defining retrofit api service
-        val service = retrofit.create(APIService::class.java)
-
-        val specificListRequest = GetSpecificListRequest(findListId())
-        //defining the call
-        val call: Call<ResponseData>? = service.deleteList(specificListRequest)
-
-        root!!.progressBar.visibility = View.VISIBLE
-
-        call!!.enqueue(object: Callback<ResponseData> {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onResponse(call: Call<ResponseData>?, response: retrofit2.Response<ResponseData>?) {
-                if(response!!.isSuccessful) {
-                    root!!.progressBar.visibility = View.GONE
-                    myLists.clear()
-                    updateMyLists()
-                }
-            }
-            override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
-                root!!.progressBar.visibility = View.GONE
-                Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
-            }
-        })
-    }
-
-    fun updateMyLists(){
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(EndPoints.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        //Defining retrofit api service
-        val service = retrofit.create(APIService::class.java)
 
         val sharedPref = activity?.getSharedPreferences("splitter", Context.MODE_PRIVATE) ?: return
         val user_id = sharedPref.getInt("user_id", 0)
 
+        //Defining retrofit api service
+        val service = retrofit.create(APIService::class.java)
+
         val myListRequest = MyListRequest(user_id)
         //defining the call
-        val call: Call<ListData>? = service.getMyList(myListRequest)
+        val call: Call<ListData>? = service.getSharedList(myListRequest)
 
         root!!.progressBar.visibility = View.VISIBLE
-
         call?.enqueue(object: Callback<ListData> {
             override fun onResponse(call: Call<ListData>?, response: retrofit2.Response<ListData>?) {
                 if(response!!.isSuccessful) {
                     root!!.progressBar.visibility = View.GONE
-                    myLists.addAll(response.body().data!!) //.toMutableList()
-                    root!!.myList_rv.adapter!!.notifyDataSetChanged()
+                    myLists = response.body().data!!.toMutableList()
+                    if(myLists.size > 0) {
+                        root!!.shared_rv .layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        root!!.shared_rv.adapter = ListRecyclerViewAdapter(myLists, null)
+                    }else{
+                        root!!.shared_rv.visibility = View.GONE
+                        root!!.empty_sharedList.visibility = View.VISIBLE
+                    }
                 }
             }
             override fun onFailure(call: Call<ListData>?, t: Throwable?) {
@@ -181,5 +136,25 @@ class myListsFragment : Fragment(), OnItemClickListener {
                 Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    override fun onItemClicked(btnClick:String, listData: data) {
+        val sharedPref = activity?.getSharedPreferences("splitter", Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putInt("list_id", listData.id)
+            apply()
+        }
+        if(btnClick.equals("click", true)){
+            Navigation.findNavController(root!!).navigate(myListsFragmentDirections.actionMyListsFragmentToListDetailFragment(listData))
+        }
+        if(btnClick.equals("DELETE", true)){
+            Navigation.findNavController(root!!).navigate(R.id.deleteFragment)
+        }
+        if(btnClick.equals("EDIT", true)){
+            Navigation.findNavController(root!!).navigate(myListsFragmentDirections.actionMyListsFragmentToNewListFragment("EDIT", listData))
+        }
+        if(btnClick.equals("SHARE", true)){
+            Navigation.findNavController(root!!).navigate(myListsFragmentDirections.actionMyListsFragmentToShareListFragment(listData.id))
+        }
     }
 }

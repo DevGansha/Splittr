@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.example.androidproject.EndPoints
 import com.example.androidproject.R
 import com.example.androidproject.models.signup.SignupRequest
@@ -68,7 +69,9 @@ class SignUpFragment : Fragment() {
         call?.enqueue(object: Callback<ResponseData> {
             override fun onResponse(call: Call<ResponseData>?, response: retrofit2.Response<ResponseData>?) {
                 root!!.progressBar.visibility = View.GONE
-                if(response!!.isSuccessful) Toast.makeText(context,  response.body().toString(), Toast.LENGTH_LONG).show()
+                if(response!!.isSuccessful){
+                    Navigation.findNavController(root!!).navigate(R.id.signInFragment)
+                }
             }
             override fun onFailure(call: Call<ResponseData>?, t: Throwable?) {
                 root!!.progressBar.visibility = View.GONE

@@ -47,6 +47,34 @@
         android:textColor = "?android:textColorSecondary"
         app:layout_constraintTop_toBottomOf="@+id/myLists"/>
 
+    <TextView
+        android:id="@+id/sharedLists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/myList_rv"
+        android:layout_marginTop="30dp"
+        android:textColor="?android:textColorSecondary"
+        android:text="@string/shared_list"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:gravity="center"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/shared_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/sharedLists"/>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/empty_sharedList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/empty_shared_txt"
+        android:textSize="16sp"
+        android:textColor = "?android:textColorSecondary"
+        app:layout_constraintTop_toBottomOf="@+id/shared_rv"/>
+
     <ProgressBar
         android:visibility="gone"
         android:id="@+id/progressBar"

@@ -45,8 +45,9 @@ class ShareListFragment : Fragment() {
         root!!.btn_plusList.setOnClickListener {
             if(root!!.shareListTxt.text.toString().trim().isNotBlank()) {
                 if (doesEmailExists(root!!.shareListTxt.text.toString().trim())) {
-                    emailToDisplay += root!!.shareListTxt.text.toString().trim()
+                    emailToDisplay += "\n" + root!!.shareListTxt.text.toString().trim()
                     root!!.emailStrings.text = emailToDisplay
+                    root!!.shareListTxt.setText("")
                 }else{
                     root!!.shareListTxt.setFocusable(true)
                     Toast.makeText(context,"This email has not an account yet.", Toast.LENGTH_LONG).show()

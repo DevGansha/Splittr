@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.li_item.view.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class ListRecyclerViewAdapter( val dataList: List<data>, val itemClickListener: OnItemClickedListener) : RecyclerView.Adapter<ListRecyclerViewAdapter.ViewHolder>() {
+class ListRecyclerViewAdapter( val dataList: List<data>, val itemClickListener: OnItemClickedListener?) : RecyclerView.Adapter<ListRecyclerViewAdapter.ViewHolder>() {
 
     //this method is returning the view for each item in the list
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListRecyclerViewAdapter.ViewHolder {
@@ -26,7 +26,7 @@ class ListRecyclerViewAdapter( val dataList: List<data>, val itemClickListener: 
     //this method is binding the data on the list
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ListRecyclerViewAdapter.ViewHolder, position: Int) {
-        holder.bindItems(dataList[position], itemClickListener)
+        holder.bindItems(dataList[position], itemClickListener!!)
     }
 
     //this method is giving the size of the list

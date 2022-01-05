@@ -43,6 +43,16 @@
                 android:name="list_id"
                 app:argType="integer" />
         </action>
+        <action
+            android:id="@+id/action_myListsFragment_to_listDetailFragment"
+            app:destination="@id/listDetailFragment" >
+            <argument
+                android:name="list_obj"
+                app:argType="com.example.androidproject.models.list.data" />
+        </action>
+        <action
+            android:id="@+id/action_myListsFragment_to_deleteFragment"
+            app:destination="@id/deleteFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -94,4 +104,9 @@
         android:name="com.example.androidproject.fragments.ShareListFragment"
         android:label="fragment_share_list"
         tools:layout="@layout/fragment_share_list" />
+    <fragment
+        android:id="@+id/deleteFragment"
+        android:name="com.example.androidproject.fragments.DeleteFragment"
+        android:label="fragment_delete"
+        tools:layout="@layout/fragment_delete" />
 </navigation>
