@@ -12,6 +12,7 @@ import com.example.androidproject.EndPoints
 import com.example.androidproject.R
 import com.example.androidproject.models.list.CreateListRequest
 import com.example.androidproject.models.list.shareListRequest
+import com.example.androidproject.models.shareList.EmailsResponse
 import com.example.androidproject.models.signup.ResponseData
 import com.example.androidproject.models.specificlist.GetSpecificListRequest
 import com.example.androidproject.models.specificlist.ListData
@@ -38,14 +39,15 @@ class ShareListFragment : Fragment() {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_share_list, container, false)
 
-        getUserEmails()
+//        getUserEmails()
+        getAllEmails()
 
         list_id = arguments?.getInt("list_id")
 
         root!!.btn_plusList.setOnClickListener {
             if(root!!.shareListTxt.text.toString().trim().isNotBlank()) {
                 if (doesEmailExists(root!!.shareListTxt.text.toString().trim())) {
-                    emailToDisplay += "\n" + root!!.shareListTxt.text.toString().trim()
+                    emailToDisplay += root!!.shareListTxt.text.toString().trim() + "\n"
                     root!!.emailStrings.text = emailToDisplay
                     root!!.shareListTxt.setText("")
                 }else{
@@ -106,8 +108,35 @@ class ShareListFragment : Fragment() {
         })
     }
 
+    fun getAllEmails(){
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(EndPoints.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        //Defining retrofit api service
+        val service = retrofit.create(APIService::class.java)
+
+        //defining the call
+        val call: Call<EmailsResponse>? = service.getAllEmails() // getListEmails(specificListRequest)
+
+        call!!.enqueue(object: Callback<EmailsResponse> {
+            override fun onResponse(call: Call<EmailsResponse>?, response: retrofit2.Response<EmailsResponse>?) {
+                if(response!!.isSuccessful) {
+                    for(email in response.body().data!!) {
+                        emailString += (email.email + " ")
+                    }
+                }
+            }
+            override fun onFailure(call: Call<EmailsResponse>?, t: Throwable?) {
+                Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
     fun addEmails(emailToDisplay: String){
-        val emails = emailToDisplay.split(" ")
+        val emails = emailToDisplay.split("\n")
+
 
         for(email in emails){
             shareList(email)

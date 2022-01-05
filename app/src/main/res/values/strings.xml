@@ -8,6 +8,7 @@
     <string name="remember_me">Remember Me</string>
     <string name="username">Username</string>
     <string name="my_list">My Lists</string>
+    <string name="lists">Lists</string>
     <string name="shared_list">Shared List</string>
     <string name="create_list">Create List</string>
     <string name="home">Home</string>

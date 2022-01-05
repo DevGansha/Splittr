@@ -7,6 +7,7 @@ import com.example.androidproject.models.list.*
 import com.example.androidproject.models.login.Login
 import com.example.androidproject.models.login.loginData
 import com.example.androidproject.models.refund.RefundListData
+import com.example.androidproject.models.shareList.EmailsResponse
 import com.example.androidproject.models.signup.SignupRequest
 import com.example.androidproject.models.signup.ResponseData
 import com.example.androidproject.models.specificlist.GetSpecificListRequest
@@ -32,6 +33,9 @@ interface APIService {
 
     @POST("LIST_EMAILSget.php")
     fun getListEmails(@Body getSpecificListRequest: GetSpecificListRequest): Call<com.example.androidproject.models.specificlist.ListData>
+
+    @POST("USERS_EMAILget.php")
+    fun getAllEmails(): Call<EmailsResponse>?
 
     @POST("ITEMadd.php")
     fun addExpense(@Body addExpenseRequest: AddExpenseRequest): Call<ResponseData>?

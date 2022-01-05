@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/myListsFragment"
-        android:title="@string/my_list" />
+        android:title="@string/lists" />
 
     <item
         android:id="@+id/homeFragment"

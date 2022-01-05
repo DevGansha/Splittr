@@ -17,6 +17,7 @@ import com.example.androidproject.R
 import com.example.androidproject.adapters.ListRecyclerViewAdapter
 import com.example.androidproject.adapters.MyListsItemRecyclerAdapter
 import com.example.androidproject.adapters.OnItemClickListener
+import com.example.androidproject.adapters.OnItemClickedListener
 import com.example.androidproject.models.list.ListData
 import com.example.androidproject.models.list.MyListRequest
 import com.example.androidproject.models.list.data
@@ -35,7 +36,7 @@ import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class myListsFragment : Fragment(), OnItemClickListener {
+class myListsFragment : Fragment(), OnItemClickListener, OnItemClickedListener {
 
     var root: View?=null
     var myLists = mutableListOf<data>()
@@ -124,7 +125,7 @@ class myListsFragment : Fragment(), OnItemClickListener {
                     myLists = response.body().data!!.toMutableList()
                     if(myLists.size > 0) {
                         root!!.shared_rv .layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                        root!!.shared_rv.adapter = ListRecyclerViewAdapter(myLists, null)
+                        root!!.shared_rv.adapter = ListRecyclerViewAdapter(myLists, this@myListsFragment)
                     }else{
                         root!!.shared_rv.visibility = View.GONE
                         root!!.empty_sharedList.visibility = View.VISIBLE
@@ -156,5 +157,9 @@ class myListsFragment : Fragment(), OnItemClickListener {
         if(btnClick.equals("SHARE", true)){
             Navigation.findNavController(root!!).navigate(myListsFragmentDirections.actionMyListsFragmentToShareListFragment(listData.id))
         }
+    }
+
+    override fun onItemClicked(data: data) {
+        Navigation.findNavController(root!!).navigate(myListsFragmentDirections.actionMyListsFragmentToListDetailFragment(data))
     }
 }

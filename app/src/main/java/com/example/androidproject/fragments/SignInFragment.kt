@@ -74,8 +74,9 @@ class SignInFragment : Fragment() {
                         apply()
                     }
                     startActivity(Intent(context, HomeActivity::class.java) )
+                }else if(response.message().equals("Bad request", ignoreCase = true)){
+                    Toast.makeText(context,"Combination of this email and password doesn't exist.", Toast.LENGTH_LONG).show()
                 }
-                    //Toast.makeText(context,  response.body().data.toString(), Toast.LENGTH_LONG).show()
             }
             override fun onFailure(call: Call<loginData>?, t: Throwable?) {
                 root!!.progressBar.visibility = View.GONE
