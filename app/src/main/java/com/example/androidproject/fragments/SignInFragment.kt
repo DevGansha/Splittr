@@ -22,17 +22,9 @@ import android.content.Context
 
 import android.content.SharedPreferences
 
-
-
-
-
 class SignInFragment : Fragment() {
 
     var root: View?=null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

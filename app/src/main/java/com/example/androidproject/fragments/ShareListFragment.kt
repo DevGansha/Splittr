@@ -10,14 +10,11 @@ import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.androidproject.EndPoints
 import com.example.androidproject.R
-import com.example.androidproject.models.list.CreateListRequest
+import com.example.androidproject.models.email.EmailCheck
 import com.example.androidproject.models.list.shareListRequest
 import com.example.androidproject.models.shareList.EmailsResponse
 import com.example.androidproject.models.signup.ResponseData
-import com.example.androidproject.models.specificlist.GetSpecificListRequest
-import com.example.androidproject.models.specificlist.ListData
 import com.example.androidproject.network.APIService
-import kotlinx.android.synthetic.main.fragment_new_list.view.*
 import kotlinx.android.synthetic.main.fragment_share_list.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,7 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ShareListFragment : Fragment() {
 
-    var emailString = ""
+    var allEmailsInDataBank = ""
     var emailToDisplay= ""
     var root: View?= null
     var list_id: Int?= null
@@ -39,21 +36,13 @@ class ShareListFragment : Fragment() {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_share_list, container, false)
 
-//        getUserEmails()
         getAllEmails()
 
         list_id = arguments?.getInt("list_id")
 
         root!!.btn_plusList.setOnClickListener {
             if(root!!.shareListTxt.text.toString().trim().isNotBlank()) {
-                if (doesEmailExists(root!!.shareListTxt.text.toString().trim())) {
-                    emailToDisplay += root!!.shareListTxt.text.toString().trim() + "\n"
-                    root!!.emailStrings.text = emailToDisplay
-                    root!!.shareListTxt.setText("")
-                }else{
-                    root!!.shareListTxt.setFocusable(true)
-                    Toast.makeText(context,"This email has not an account yet.", Toast.LENGTH_LONG).show()
-                }
+                doesEmailExists(root!!.shareListTxt.text.toString().trim(), emailToDisplay)
             }
         }
         root!!.btn_shareList.setOnClickListener {
@@ -65,13 +54,33 @@ class ShareListFragment : Fragment() {
         return root
     }
 
-    fun doesEmailExists(email: String): Boolean{
-        val emails = emailString.split(" ")
+    fun doesEmailExists(email: String, emailToDisplay: String): Boolean{
+        var isUserValid: Boolean = false
 
-        if(emails.contains(email))
-            return true
+        if(emailToDisplay.isNotBlank()){
+            val emails = emailToDisplay.split("\n")
+            if(emails.contains(email)){
+                isUserValid = false
+                Toast.makeText(context, "You already added this person to the list.", Toast.LENGTH_LONG).show()
+            }else{
+                isUserValid = true
+            }
+        }
 
-        return false
+        val emailinDataBank = allEmailsInDataBank.split(" ") //Split all the emails in dataBank to get an array
+
+        if(!emailinDataBank.contains(email) && isUserValid) {
+            isUserValid = false
+            Toast.makeText(context, "This email has not an account yet.", Toast.LENGTH_LONG).show()
+        }else{
+            isUserValid = true
+        }
+
+        if(isUserValid) {
+            isUserValid = checkIfEmailAlreadyInList(email, findListId())
+        }
+
+        return isUserValid
     }
 
     fun findListId(): Int{
@@ -81,7 +90,17 @@ class ShareListFragment : Fragment() {
         return list_id
     }
 
-    fun getUserEmails(){
+    fun addEmails(emailToDisplay: String){
+        val emails = emailToDisplay.split("\n")
+
+        for(email in emails){
+            shareList(email)
+        }
+    }
+
+    fun checkIfEmailAlreadyInList(email: String, list_id: Int): Boolean{
+        var isUserInList: Boolean = false
+
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(EndPoints.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -90,22 +109,38 @@ class ShareListFragment : Fragment() {
         //Defining retrofit api service
         val service = retrofit.create(APIService::class.java)
 
-        val specificListRequest = GetSpecificListRequest(findListId())
-        //defining the call
-        val call: Call<ListData> = service.getListEmails(specificListRequest)
+        val emailCheck = EmailCheck(email)
 
-        call.enqueue(object: Callback<ListData> {
-            override fun onResponse(call: Call<ListData>?, response: retrofit2.Response<ListData>?) {
+        //defining the call
+        val call: Call<com.example.androidproject.models.email.ResponseData>? = service.listUser(emailCheck)
+
+        root!!.progressbar.visibility = View.VISIBLE
+        call?.enqueue(object: Callback<com.example.androidproject.models.email.ResponseData> {
+            override fun onResponse(call: Call<com.example.androidproject.models.email.ResponseData>?, response: retrofit2.Response<com.example.androidproject.models.email.ResponseData>?) {
                 if(response!!.isSuccessful) {
-                    for(email in response.body().data!!) {
-                        emailString += (email.email + " ")
+                    root!!.progressbar.visibility = View.GONE
+                    if(response.body().data!!.isNotEmpty()) {
+                        response.body().data!!.forEach {
+                            if(it.list_id == list_id){
+                                isUserInList = true
+                                Toast.makeText(context, "You already added this person to the list.", Toast.LENGTH_LONG).show()
+                            }
+                        }
                     }
-                }
+
+                    if(!isUserInList)
+                        emailToDisplay += email + "\n"
+                        root!!.emailStrings.text = emailToDisplay
+                        root!!.shareListTxt.setText("")
+                    }
+
             }
-            override fun onFailure(call: Call<ListData>?, t: Throwable?) {
+            override fun onFailure(call: Call<com.example.androidproject.models.email.ResponseData>?, t: Throwable?) {
+                root!!.progressbar.visibility = View.GONE
                 Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
             }
         })
+        return isUserInList
     }
 
     fun getAllEmails(){
@@ -124,7 +159,7 @@ class ShareListFragment : Fragment() {
             override fun onResponse(call: Call<EmailsResponse>?, response: retrofit2.Response<EmailsResponse>?) {
                 if(response!!.isSuccessful) {
                     for(email in response.body().data!!) {
-                        emailString += (email.email + " ")
+                        allEmailsInDataBank += (email.email + " ")
                     }
                 }
             }
@@ -132,15 +167,6 @@ class ShareListFragment : Fragment() {
                 Toast.makeText(context, "Error" , Toast.LENGTH_LONG).show()
             }
         })
-    }
-
-    fun addEmails(emailToDisplay: String){
-        val emails = emailToDisplay.split("\n")
-
-
-        for(email in emails){
-            shareList(email)
-        }
     }
 
     fun shareList(emailToDisplay: String){
@@ -171,5 +197,4 @@ class ShareListFragment : Fragment() {
             }
         })
     }
-
 }

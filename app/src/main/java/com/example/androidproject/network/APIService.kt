@@ -1,5 +1,6 @@
 package com.example.androidproject.network
 
+import com.example.androidproject.models.email.EmailCheck
 import com.example.androidproject.models.expense.AddExpenseRequest
 import com.example.androidproject.models.item.ItemRequest
 import com.example.androidproject.models.item.ResponseDataItem
@@ -54,4 +55,7 @@ interface APIService {
 
     @POST("LISTshare.php")
     fun shareList(@Body shareListRequest: shareListRequest): Call<ResponseData>?
+
+    @POST("LIST_USERget.php")
+    fun listUser(@Body emailCheck: EmailCheck): Call<com.example.androidproject.models.email.ResponseData>?
 }
