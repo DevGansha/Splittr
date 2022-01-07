@@ -121,6 +121,7 @@ class ListDetailFragment : Fragment() {
         call?.enqueue(object: Callback<ResponseDataItem> {
             override fun onResponse(call: Call<ResponseDataItem>?, response: retrofit2.Response<ResponseDataItem>?) {
                 if(response!!.isSuccessful) {
+                    myLists.clear()
                     myLists.addAll(response.body().data!!) //.toMutableList()
                     if(myLists.size > 0) {
                         root!!.items_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

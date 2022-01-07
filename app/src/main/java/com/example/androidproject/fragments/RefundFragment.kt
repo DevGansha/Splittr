@@ -77,20 +77,20 @@ class RefundFragment : Fragment() {
 
         var refundsListString = ArrayList<String>()
         if(refundsLists.size > 0) {
-            val amountLog = HashMap<String, Int>()
+            val amountLog = HashMap<String, Double>()
 
             for(refund in refundsLists){
                 val string = refund.username_to + "-" + refund.username_from
                 val reverseString = refund.username_from + "-"+ refund.username_to
                 if(amountLog.containsKey(string)) {
-                    val amount = refund.waarde.toDouble().toInt() + amountLog.getValue(string).toInt()
+                    val amount = refund.waarde.toDouble().toDouble() + amountLog.getValue(string).toDouble()
                     amountLog.put(string, amount)
                 }else if(amountLog.containsKey(reverseString)){
-                    val amount = refund.waarde.toDouble().toInt() - amountLog.getValue(reverseString).toInt()
+                    val amount = refund.waarde.toDouble().toDouble() - amountLog.getValue(reverseString).toDouble()
                     amountLog.put(reverseString, amount * (-1))
                 }
                 else{
-                    amountLog.put(string, refund.waarde.toDouble().toInt())
+                    amountLog.put(string, refund.waarde.toDouble())
                 }
             }
 
